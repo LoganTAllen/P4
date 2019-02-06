@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
  */
 class AnagramCheckerTest {
 	
-	/**
+	/*
 	 * The following JUnit tests check the public static String sort(String) method
 	 */
 	@Nested
@@ -68,7 +68,7 @@ class AnagramCheckerTest {
 		}
 	}
 	
-	/**
+	/*
 	 * The following JUnit tests check the public static <T> void insertionSort(T[], Comparator<? super T>) method
 	 */
 	@Nested
