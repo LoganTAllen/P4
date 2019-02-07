@@ -48,8 +48,7 @@ public class AreAnagramsCheckAnalysis {
 
 			// Let things stabilize
 			long startTime = System.nanoTime();
-			while(System.nanoTime() - startTime < 1000000000)
-				;
+			while(System.nanoTime() - startTime < 1000000000);
 
 			// Time the routine
 			startTime = System.nanoTime();
