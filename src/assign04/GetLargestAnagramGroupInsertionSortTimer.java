@@ -13,62 +13,64 @@ import java.util.Random;
  * @version February 6, 2019
  */
 public class GetLargestAnagramGroupInsertionSortTimer {
-	
-	//TODO: This code is copied directly from the in class example. Modify Accordingly
 
 	public static void main(String[] args) {
 
-		final int NSTART = 100000;
-		final int NSTOP = 2000000;
-		final int NINCR = 100000;
+		final int NSTART = 1000;
+		final int NSTOP = 20000;
+		final int NINCR = 1000;
 
 		Random rng = new Random();
 		
-		System.out.println("areAnagrams");
+		System.out.println("getLargestAnagramGroup (Insertion Sort Method)");
 		System.out.println("N\ttime(ns)");
 
 		for(int N = NSTART; N <= NSTOP; N += NINCR) {
 			System.out.print(N + "\t");
 		
-			// Build two random strings of length N
-			String input1 = new String();
-			String input2 = new String();
+			// Build a String array of size N
+			String[] inputStringArray = new String[N];
+			String inputString = new String();
 			
-			for(int i = 1; i <= N; i++) {
-				char a = (char) (rng.nextInt(26) + 97);
-				char b = (char) (rng.nextInt(26) + 97);
-				input1 += a;
-				input2 += b;
+			// populate the array with random Strings of size 4 - 8
+			for(int i = 0; i < inputStringArray.length; i++) {
+				String inputStringCopy = inputString;
+				int stringLength = rng.nextInt(5) + 4;
+				
+				for(int j = 1; j <= stringLength; j++) {
+					char a = (char) (rng.nextInt(26) + 97);
+					inputStringCopy += a;
+				}
+				
+				inputStringArray[i] = inputStringCopy;
 			}
 			
-			System.out.println(getTime(input1, input2));
+			System.out.println(getTime(inputStringArray));
 		}
 
 	}
 
 	@SuppressWarnings("unused")
-	private static long getTime(String input1, String input2) {
+	private static long getTime(String[] inputStringArray) {
 				
-		final int TIMES_TO_LOOP = 100;
+		final int TIMES_TO_LOOP = 10;
 
 		// Let things stabilize
 		long startTime = System.nanoTime();
 		while(System.nanoTime() - startTime < 1000000000);
 
-		// Time areAnagrams
+		// Time getLargestAnagramGroup
 		startTime = System.nanoTime();
 		for(int i = 0; i < TIMES_TO_LOOP; i++) {
-			String copy1 = input1;
-			String copy2 = input2;
-			AnagramChecker.areAnagrams(copy1, copy2);
+			String[] temp = Arrays.copyOf(inputStringArray, inputStringArray.length);
+			AnagramChecker.getLargestAnagramGroup(inputStringArray);
 		}
 
 		long midTime = System.nanoTime();
 
-		// Remove the cost of running the loop and making copies of strings
+		// Remove the cost of running the loop and making copies of string arrays
 		for(int i = 0; i < TIMES_TO_LOOP; i++) {
-			String copy1 = input1;
-			String copy2 = input2;
+			String[] temp = Arrays.copyOf(inputStringArray, inputStringArray.length);
 		}
 
 		long endTime = System.nanoTime();
