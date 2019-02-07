@@ -2,6 +2,8 @@ package assign04;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
@@ -41,7 +43,7 @@ class AnagramCheckerTest {
 		@DisplayName("Capital Words")
 		void sortCapitalTest() {
 			String capital = "SaltLakeCity";
-			assertEquals("CLSaaeikltty", AnagramChecker.sort(capital));
+			assertEquals("aaCeiklLStty", AnagramChecker.sort(capital));
 		}
 	
 		@Test
@@ -83,9 +85,9 @@ class AnagramCheckerTest {
 			@DisplayName("Basic Array")
 			void sortBasicCharArrayTest() {
 				Character[] basicCharArray = {'p', 'm', 'l', 'o', 'n'};
-				Character[] sortedCharArray = {'l', 'o', 'n', 'm', 'p'};
+				Character[] sortedCharArray = {'l', 'm', 'n', 'o', 'p'};
 				AnagramChecker.insertionSort(basicCharArray, Comparator.naturalOrder());
-				assertEquals(sortedCharArray, basicCharArray);
+				assertTrue(Arrays.equals(sortedCharArray, basicCharArray));
 			}
 	
 			@Test
@@ -94,7 +96,7 @@ class AnagramCheckerTest {
 				Character[] upperAndLowercase = {'b', 'A', 'B', 'c', 'a', 'C'};
 				Character[] sortedCase = {'A', 'B', 'C', 'a', 'b', 'c'};
 				AnagramChecker.insertionSort(upperAndLowercase, Comparator.naturalOrder());
-				assertEquals(sortedCase, upperAndLowercase);
+				assertTrue(Arrays.equals(upperAndLowercase, sortedCase));
 			}
 	
 			@Test
@@ -103,7 +105,7 @@ class AnagramCheckerTest {
 				Character[] withDuplicates = {'a', 'c', 'd', 'f', 'c', 'a'};
 				Character[] sortedDuplicates = {'a', 'a', 'c', 'c', 'd', 'f'};
 				AnagramChecker.insertionSort(withDuplicates, Comparator.naturalOrder());
-				assertEquals(sortedDuplicates, withDuplicates);
+				assertTrue(Arrays.equals(sortedDuplicates, withDuplicates));
 			}
 		}
 		
@@ -117,7 +119,7 @@ class AnagramCheckerTest {
 				String[] basicStringArray = {"orange", "banana", "strawberry", "apple"};
 				String[] sortedStringArray = {"apple", "banana", "orange", "strawberry"};
 				AnagramChecker.insertionSort(basicStringArray, Comparator.naturalOrder());
-				assertEquals(sortedStringArray, basicStringArray);
+				assertTrue(Arrays.equals(sortedStringArray, basicStringArray));
 			}
 			
 			@Test
@@ -126,7 +128,7 @@ class AnagramCheckerTest {
 				String[] stringArrayWithCapitals = {"Orange", "apple", "Apple", "orange"};
 				String[] sortedStringArray = {"Apple", "Orange", "apple", "orange"};
 				AnagramChecker.insertionSort(stringArrayWithCapitals, Comparator.naturalOrder());
-				assertEquals(sortedStringArray, stringArrayWithCapitals);
+				assertTrue(Arrays.equals(sortedStringArray, stringArrayWithCapitals));
 			}
 		
 			@Test
@@ -135,7 +137,7 @@ class AnagramCheckerTest {
 				String[] duplicateStringArray = {"orange", "strawberry", "apple", "strawberry", "apple"};
 				String[] sortedStringArray = {"apple", "apple", "orange", "strawberry", "strawberry"};
 				AnagramChecker.insertionSort(duplicateStringArray, Comparator.naturalOrder());
-				assertEquals(sortedStringArray, duplicateStringArray);
+				assertTrue(Arrays.equals(sortedStringArray, duplicateStringArray));
 			}
 			
 			@Test
@@ -144,7 +146,7 @@ class AnagramCheckerTest {
 				String[] stringArray = {"Apple", "Orange", "apple", "orange"};
 				String[] sortedStringArray = {"Apple", "Orange", "apple", "orange"};
 				AnagramChecker.insertionSort(stringArray, Comparator.naturalOrder());
-				assertEquals(sortedStringArray, stringArray);
+				assertTrue(Arrays.equals(sortedStringArray, stringArray));
 			}
 		
 			@Test
@@ -153,13 +155,13 @@ class AnagramCheckerTest {
 				String[] backwardsStringArray = {"orange", "apple", "Orange",  "Apple"};
 				String[] sortedStringArray = {"Apple", "Orange", "apple", "orange"};
 				AnagramChecker.insertionSort(backwardsStringArray, Comparator.naturalOrder());
-				assertEquals(sortedStringArray, backwardsStringArray);
+				assertTrue(Arrays.equals(sortedStringArray, backwardsStringArray));
 			}
 		
 			@Test
 			@DisplayName("Empty Array")
 			void sortNullArrayTest() {
-				String[] empty = new String[0];
+				String[] empty = null;
 				assertThrows(NullPointerException.class, () -> {
 					AnagramChecker.insertionSort(empty, Comparator.naturalOrder());
 				});
@@ -237,10 +239,16 @@ class AnagramCheckerTest {
 		@Test
 		@DisplayName("One Anagram Group")
 		void oneAnagramGroupStringArrayTest() {
-			String[] list = {"rental", "abets", "baste", "bead", "betas", "beast", "beats", "mane"};
-			//TODO: The largestAnagramGroup array order may change based on how we implement the method
+			String[] arr = {"rental", "abets", "baste", "bead", "betas", "beast", "beats", "mane"};
 			String[] largestAnagramGroup = {"abets", "baste", "betas", "beast", "beats"};
-			assertEquals(largestAnagramGroup, AnagramChecker.getLargestAnagramGroup(list));
+			
+			String[] outcome = AnagramChecker.getLargestAnagramGroup(arr);
+			ArrayList<String> list = new ArrayList<String>(Arrays.asList(outcome));
+			
+			for(int i = 0; i < largestAnagramGroup.length; ++i) {
+				assertTrue(list.contains(largestAnagramGroup[i]));
+			}
+			
 		}
 	
 		@Test
@@ -248,24 +256,27 @@ class AnagramCheckerTest {
 		void noAnagramTest() {
 			String[] list = {"apple", "banana", "orange", "pear"};
 			String[] largestAnagramGroup = {};
-			assertEquals(largestAnagramGroup, AnagramChecker.getLargestAnagramGroup(list));
+
+			assertTrue(Arrays.equals(largestAnagramGroup, AnagramChecker.getLargestAnagramGroup(list)));
 		}
 	
 		@Test
 		@DisplayName("Three Equal Size Anagram Groups")
 		void threeEqualAnagramGroupsTest() {
-			String[] list = {"abut", "race", "tabu", "care", "tuba", "acme", "came", "mace", "acre"};
-			//TODO: The output array could change depending on implementation of the method in addition to the order of the arrays
-			String[] possibilityOne = {"abut", "tabu", "tuba"};
-			String[] possibilityTwo = {"acme", "came", "mace"};
-			String[] possibilityThree = {"acre", "care", "race"};
-			assertEquals(possibilityOne, AnagramChecker.getLargestAnagramGroup(list));
+			String[] arr = new String[]{"abut", "race", "tabu", "care", "tuba", "acme", "came", "mace", "acre"};
+			
+			String[] outcome = AnagramChecker.getLargestAnagramGroup(arr);
+			ArrayList<String> list = new ArrayList<String>(Arrays.asList(outcome));
+			
+			assertTrue(list.contains("abut") && list.contains("tabu") && list.contains("tuba")
+					|| list.contains("acme") && list.contains("came") && list.contains("mace")
+					|| list.contains("acre") && list.contains("care") && list.contains("race"));
 		}
 	
 		@Test
 		@DisplayName("Null String Array")
 		void largestAnagramGroupNullStringTest() {
-			String[] empty = {};
+			String[] empty = null;
 			assertThrows(NullPointerException.class, () -> {
 				AnagramChecker.getLargestAnagramGroup(empty);
 			});

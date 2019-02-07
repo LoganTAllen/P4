@@ -1,6 +1,7 @@
 package assign04;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 
@@ -16,8 +17,30 @@ import java.util.Scanner;
 public class AnagramChecker {
 
 	//TODO: test code
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		System.out.println(AnagramChecker.sort("baCD"));
+
+		String[] sample = new String[] {
+				"alpha",
+				"phlaa",
+				"hapla",
+				"bird",
+				"ribd",
+				"irdb",
+				"palha",
+				"args",
+				"rags",
+				"RasG",
+				"bdir",
+				"Alpha",
+				"RAGS",
+				"GARS",
+				"SArg"
+		};
+		
+		String[] largestGroup = AnagramChecker.getLargestAnagramGroup(sample);
+		
+		System.out.println(largestGroup);
 	}
 
 	/**
@@ -132,7 +155,7 @@ public class AnagramChecker {
 	 * @return - an array of the largest group of anagrams contained in the input array
 	 */
 	public static String[] getLargestAnagramGroup(String[] arr) {
-		String[] arrCopy = new String[arr.length];
+		String[] arrCopy = arr.clone();
 		
 		/*
 		 * perform an insertion sort on the array of strings which compares
@@ -158,27 +181,19 @@ public class AnagramChecker {
 	}
 	
 	/**
-	 * this generic method returns an array of the largest consecutive group of equivalent
-	 * objects in the array.
+	 * this method returns an array of the largest consecutive group of equivalent
+	 * Strings in the array.
 	 * 
 	 * if the largest group is a group consisting of only one element, the method returns an
 	 * empty array.
 	 * 
-	 * @param arr - the array to search for the largest consecutive group of equivalent objects
+	 * @param arr - the array to search for the largest consecutive group of equivalent strings
 	 * @param comparator - the comparator to use for comparing elements in the array
 	 * @return - an array of the largest consecutive group of equivalent elements in the input array
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T[] getLargestConsecutiveGroupInArray(T[] arr, Comparator<? super T> comparator){
-		/*
-		 * this method will not work for object types that do not inherit from Object,
-		 * because the return array must be casted from an Object array.
-		 */
-		if(!(arr[0] instanceof Object)) throw new IllegalArgumentException("The object type must inherit from Object");
+	public static String[] getLargestConsecutiveGroupInArray(String[] arr, Comparator<String> comparator) {
+		String[] largestGroup = {};
 		
-		//create an empty array of type T to return in case there are no groups larger than one element.
-		T[] largestGroup = (T[]) new Object[0];
-
 		//the current size of the current group. (the number of elements contained in the group)
 		int currentGroupSize = 1;
 		//the index of the first element of the current group
@@ -200,12 +215,11 @@ public class AnagramChecker {
 				//increment the current group size
 				currentGroupSize++;
 
-				//if this group size is larger than the largest, update the largestGroupSize value
-				largestGroupSize = Math.max(currentGroupSize, largestGroupSize);
-
 				//set the largestGroupIndex to the index of this group, if it is larger than the largest group index
 				largestGroupIndex = currentGroupSize > largestGroupSize ? currentGroupIndex : largestGroupIndex;
-				
+
+				//if this group size is larger than the largest, update the largestGroupSize value
+				largestGroupSize = Math.max(currentGroupSize, largestGroupSize);
 			}
 			//this is now a new group
 			else {
@@ -219,9 +233,10 @@ public class AnagramChecker {
 		//if the largest group contains more than one element, fill it.
 		if(largestGroupSize > 1) {
 			//fill the largest group array with the size and index information of the largest group
-			largestGroup = (T[]) new Object[largestGroupSize];
-			for(int i = largestGroupIndex; i < largestGroupSize; ++i) {
-				largestGroup[i] = arr[i];
+			largestGroup = new String[largestGroupSize];
+			for(int i = 0; i < largestGroupSize; ++i) {
+				//fill this array starting from the largestGroupIndex in the arr
+				largestGroup[i] = arr[i + largestGroupIndex];
 			}
 		}
 		
