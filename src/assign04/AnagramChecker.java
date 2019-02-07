@@ -15,6 +15,10 @@ import java.util.Scanner;
  */
 public class AnagramChecker {
 
+	//TODO: test code
+	public static void main(String[] args) {
+		System.out.println(AnagramChecker.sort("baCD"));
+	}
 
 	/**
 	 * This method returns the lexicographically-sorted version of
@@ -24,34 +28,21 @@ public class AnagramChecker {
 	 * @return - the lexicographically sorted version of the input string
 	 */
 	public static String sort(String str) {
-		//generate an object array of the Characters in the input string
-		Character[] chars = stringToCharacterArray(str);
+		//generate an object array of the characters in the input string (as individual String objects)
+		//	we want the characters as String objects so that we can compare them in the comparator
+		String[] chars = str.split("");
 		
 		//perform an insertionSort on the array of Characters
-		insertionSort(chars, (lhs, rhs)->Character.compare(lhs, rhs));
+		insertionSort(chars, (lhs, rhs)->lhs.toLowerCase().compareTo(rhs.toLowerCase()));
 		
-		//return the sorted String
-		return chars.toString();
-	}
-	
-	/**
-	 * returns a Character (object) array of the characters contained within a string
-	 * 
-	 * @param str - the string to convert to a Character (object) array
-	 * @return - the array of Character's (object) contained within the input string
-	 */
-	public static Character[] stringToCharacterArray(String str) {
-		int strLength = str.length();
-		//create an object array Characters of the length of the string
-		Character[] chars = new Character[strLength];
-		
-		//fill the array with the characters in the string (auto-boxing)
-		for(int i = 0; i < str.length(); ++i) {
-			chars[i] = str.charAt(i);
+		//convert Character array back to a string
+		String ret = "";
+		for(int i = 0; i < chars.length; ++i) {
+			ret += chars[i];
 		}
-		
-		//return the array of characters
-		return chars;
+
+		//return the sorted String
+		return ret;
 	}
 	
 	/**
@@ -66,7 +57,10 @@ public class AnagramChecker {
 		int minIndex = 0;
 		
 		//the current index to search for a new minimum value from
-		int currentIndex = 1;
+		int currentIndex = 0;
+		
+		//flag if a swap needs to happen
+		boolean swap = false;
 		
 		/*
 		 * the insertion sort algorithm goes as follows:
@@ -75,16 +69,24 @@ public class AnagramChecker {
 		 * then swapping the new minimum with the current index
 		 */
 		while(currentIndex < arr.length) {
+			//set the new minIndex to the current index for this next minimizing search
+			//	(now that the min value from the previous search is before this new scope)
+			minIndex = currentIndex;
 
 			//search from the current index and set the new minimum value
 			for(int i = currentIndex; i < arr.length; ++i) {
 				if(comparator.compare(arr[i], arr[minIndex]) < 0) {
 					minIndex = i;
+					swap = true; //set true to tell the program a swap needs to happen
 				}
 			}
 			
 			//swap the element at the currentIndex with the new minimum
-			swapElements(arr, currentIndex, minIndex);
+			if(swap) {
+				swapElements(arr, currentIndex, minIndex);
+				swap = false;
+			}
+
 
 			//move the current index up
 			currentIndex++;
@@ -117,7 +119,8 @@ public class AnagramChecker {
 
 		//if the lexicographically sorted versions of both strings are equal, 
 		//	the strings are anagrams of eachother
-		return sort(str0).equals(sort(str1));
+		//use toLowerCase() in order to compare the strings, ignoring capitalization
+		return sort(str0).toLowerCase().equals(sort(str1).toLowerCase());
 	}
 	
 	/**
@@ -133,12 +136,12 @@ public class AnagramChecker {
 		
 		/*
 		 * perform an insertion sort on the array of strings which compares
-		 * them based on the lexigraphical order of their sorted versions.
+		 * them based on the lexigraphical order of their sorted versions, ignoring capitalization.
 		 * 
 		 * this will sort the strings, as they are, in groups of strings which are anagrams
 		 * of eachother.
 		 */
-		insertionSort(arrCopy, (lhs, rhs)->sort(lhs).compareTo(sort(rhs)));
+		insertionSort(arrCopy, (lhs, rhs)->sort(lhs).toLowerCase().compareTo(sort(rhs).toLowerCase()));
 		
 		/* 
 		 * find the largest group of anagrams in arr by passing arrCopy to the 

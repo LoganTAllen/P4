@@ -59,7 +59,7 @@ class AnagramCheckerTest {
 		}
 	
 		@Test
-		@displayName("Null String")
+		@DisplayName("Null String")
 		void sortNullStringTest() {
 			String empty = null;
 			assertThrows(NullPointerException.class, () -> {
@@ -82,8 +82,8 @@ class AnagramCheckerTest {
 			@Test
 			@DisplayName("Basic Array")
 			void sortBasicCharArrayTest() {
-				char[] basicCharArray = {'p', 'm', 'l', 'o', 'n'};
-				char[] sortedCharArray = {'l', 'o', 'n', 'm', 'p'};
+				Character[] basicCharArray = {'p', 'm', 'l', 'o', 'n'};
+				Character[] sortedCharArray = {'l', 'o', 'n', 'm', 'p'};
 				AnagramChecker.insertionSort(basicCharArray, Comparator.naturalOrder());
 				assertEquals(sortedCharArray, basicCharArray);
 			}
@@ -91,8 +91,8 @@ class AnagramCheckerTest {
 			@Test
 			@DisplayName("Upper and Lowercase")
 			void sortUpperAndLowercaseCharArrayTest() {
-				char[] upperAndLowercase = {'b', 'A', 'B', 'c', 'a', 'C'};
-				char[] sortedCase = {'A', 'B', 'C', 'a', 'b', 'c'};
+				Character[] upperAndLowercase = {'b', 'A', 'B', 'c', 'a', 'C'};
+				Character[] sortedCase = {'A', 'B', 'C', 'a', 'b', 'c'};
 				AnagramChecker.insertionSort(upperAndLowercase, Comparator.naturalOrder());
 				assertEquals(sortedCase, upperAndLowercase);
 			}
@@ -100,8 +100,8 @@ class AnagramCheckerTest {
 			@Test
 			@DisplayName("With Duplicates")
 			void sortDuplicateCharArrayTest() {
-				char[] withDuplicates = {'a', 'c', 'd', 'f', 'c', 'a'};
-				char[] sortedDuplicates = {'a', 'a', 'c', 'c', 'd', 'f'};
+				Character[] withDuplicates = {'a', 'c', 'd', 'f', 'c', 'a'};
+				Character[] sortedDuplicates = {'a', 'a', 'c', 'c', 'd', 'f'};
 				AnagramChecker.insertionSort(withDuplicates, Comparator.naturalOrder());
 				assertEquals(sortedDuplicates, withDuplicates);
 			}
@@ -125,7 +125,8 @@ class AnagramCheckerTest {
 			void sortStringArrayWithCapitalsTest() {
 				String[] stringArrayWithCapitals = {"Orange", "apple", "Apple", "orange"};
 				String[] sortedStringArray = {"Apple", "Orange", "apple", "orange"};
-				assertEquals(sortedStringArray, AnagramChecker.insertionSort(stringArrayWithCapitals, Comparator.naturalOrder()));
+				AnagramChecker.insertionSort(stringArrayWithCapitals, Comparator.naturalOrder());
+				assertEquals(sortedStringArray, stringArrayWithCapitals);
 			}
 		
 			@Test
@@ -133,7 +134,8 @@ class AnagramCheckerTest {
 			void sortStringArrayWithDuplicatesTest() {
 				String[] duplicateStringArray = {"orange", "strawberry", "apple", "strawberry", "apple"};
 				String[] sortedStringArray = {"apple", "apple", "orange", "strawberry", "strawberry"};
-				assertEquals(sortedStringArray, AnagramChecker.insertionSort(duplicateStringArray, Comparator.naturalOrder()));
+				AnagramChecker.insertionSort(duplicateStringArray, Comparator.naturalOrder());
+				assertEquals(sortedStringArray, duplicateStringArray);
 			}
 			
 			@Test
@@ -141,7 +143,8 @@ class AnagramCheckerTest {
 			void sortAlreadySortedStringArrayTest() {
 				String[] stringArray = {"Apple", "Orange", "apple", "orange"};
 				String[] sortedStringArray = {"Apple", "Orange", "apple", "orange"};
-				assertEquals(sortedStringArray, AnagramChecker.insertionSort(stringArray, Comparator.naturalOrder()));
+				AnagramChecker.insertionSort(stringArray, Comparator.naturalOrder());
+				assertEquals(sortedStringArray, stringArray);
 			}
 		
 			@Test
@@ -149,15 +152,16 @@ class AnagramCheckerTest {
 			void sortBackwardsSortedStringArray() {
 				String[] backwardsStringArray = {"orange", "apple", "Orange",  "Apple"};
 				String[] sortedStringArray = {"Apple", "Orange", "apple", "orange"};
-				assertEquals(sortedStringArray, AnagramChecker.insertionSort(backwardsStringArray, Comparator.naturalOrder()));
+				AnagramChecker.insertionSort(backwardsStringArray, Comparator.naturalOrder());
+				assertEquals(sortedStringArray, backwardsStringArray);
 			}
 		
 			@Test
-			@DisplayName("Null Array")
+			@DisplayName("Empty Array")
 			void sortNullArrayTest() {
-				String[] empty;
+				String[] empty = new String[0];
 				assertThrows(NullPointerException.class, () -> {
-					AnagramChecker.insertionSort(empty, Comparator.NaturalOrder());
+					AnagramChecker.insertionSort(empty, Comparator.naturalOrder());
 				});
 			}
 		
@@ -165,8 +169,7 @@ class AnagramCheckerTest {
 			@DisplayName("Null Comparator")
 			void sortArrayWithNullComparatorTest() {
 				String[] basicStringArray = {"orange", "banana", "strawberry", "apple"};
-				//TODO: Implement null comparator correctly
-				Comparator nullComparator;
+				Comparator nullComparator = null;
 				assertThrows(NullPointerException.class, () -> {
 					AnagramChecker.insertionSort(basicStringArray, nullComparator);
 				});
@@ -228,7 +231,7 @@ class AnagramCheckerTest {
 	 * The following JUnit tests check the public static String[] getLargestAnagramGroup(String[]) method
 	 */
 	@Nested
-	@DisplayNames("getLargestAnagramGroup(String[]) Method Tests")
+	@DisplayName("getLargestAnagramGroup(String[]) Method Tests")
 	class LargestAnagramGroupStringArrayTests {
 		
 		@Test
@@ -256,7 +259,7 @@ class AnagramCheckerTest {
 			String[] possibilityOne = {"abut", "tabu", "tuba"};
 			String[] possibilityTwo = {"acme", "came", "mace"};
 			String[] possibilityThree = {"acre", "care", "race"};
-			assertEquals(possibilityOne, AnagramChecker.getLargestAnagramGrou(list));
+			assertEquals(possibilityOne, AnagramChecker.getLargestAnagramGroup(list));
 		}
 	
 		@Test
