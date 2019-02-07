@@ -18,84 +18,61 @@ public class GetLargestAnagramGroupInsertionSortTimer {
 
 	public static void main(String[] args) {
 
-		final int NSTART = 10000;
-		final int NSTOP = 100000;
-		final int NINCR = 10000;
+		final int NSTART = 100000;
+		final int NSTOP = 2000000;
+		final int NINCR = 100000;
 
 		Random rng = new Random();
 		
-		System.out.println("N\tBest case\tAverage case\tWorst case\n");
+		System.out.println("areAnagrams");
+		System.out.println("N\ttime(ns)");
 
 		for(int N = NSTART; N <= NSTOP; N += NINCR) {
 			System.out.print(N + "\t");
-
-			// Build three arrays of N integers, two sorted and one
-			// reverse-sorted.
-			int[] sortedArr = new int[N];
-			int[] permutedArr = new int[N];
-			int[] reverseSortedArr = new int[N];
-			for(int i = 0; i < N; i++) {
-				sortedArr[i] = i;
-				permutedArr[i] = i;
-				reverseSortedArr[i] = N - i - 1;
+		
+			// Build two random strings of length N
+			String input1 = new String();
+			String input2 = new String();
+			
+			for(int i = 1; i <= N; i++) {
+				char a = (char) (rng.nextInt(26) + 97);
+				char b = (char) (rng.nextInt(26) + 97);
+				input1 += a;
+				input2 += b;
 			}
-
-			// Randomly permute one of the arrays.
-			for(int i = 0; i < N; i++) {
-				int randIdx = rng.nextInt(N);
-				int temp = permutedArr[i];
-				permutedArr[i] = permutedArr[randIdx];
-				permutedArr[randIdx] = temp;
-			}
-
-			System.out.println(getTime(sortedArr) + "\t" + getTime(permutedArr) + "\t" + 
-					getTime(reverseSortedArr));
+			
+			System.out.println(getTime(input1, input2));
 		}
 
 	}
 
 	@SuppressWarnings("unused")
-	private static long getTime(int[] arr) {
+	private static long getTime(String input1, String input2) {
 				
 		final int TIMES_TO_LOOP = 100;
 
 		// Let things stabilize
 		long startTime = System.nanoTime();
-		while(System.nanoTime() - startTime < 1000000000)
-			;
+		while(System.nanoTime() - startTime < 1000000000);
 
-		// Time the sort
+		// Time areAnagrams
 		startTime = System.nanoTime();
 		for(int i = 0; i < TIMES_TO_LOOP; i++) {
-			// Don't sort an already sorted array!
-			int[] temp = Arrays.copyOf(arr, arr.length);
-			sort(temp);
+			String copy1 = input1;
+			String copy2 = input2;
+			AnagramChecker.areAnagrams(copy1, copy2);
 		}
 
 		long midTime = System.nanoTime();
 
-		// Time the "overhead"
+		// Remove the cost of running the loop and making copies of strings
 		for(int i = 0; i < TIMES_TO_LOOP; i++) {
-			int[] temp = Arrays.copyOf(arr, arr.length); 
+			String copy1 = input1;
+			String copy2 = input2;
 		}
 
 		long endTime = System.nanoTime();
 
 		return ((midTime - startTime) - (endTime - midTime)) / TIMES_TO_LOOP;
-	}
-
-	/**
-	 * Sorts the given array, using the insertion sort algorithm.
-	 * 
-	 * @param arr
-	 */
-	public static void sort(int[] arr) {
-		for(int i = 1; i < arr.length; i++) {
-			int val = arr[i];
-			int j;
-			for(j = i - 1; j >= 0 && arr[j] > val; j--)
-				arr[j + 1] = arr[j];
-			arr[j + 1] = val;
-		}
 	}
 }
