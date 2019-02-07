@@ -1,6 +1,9 @@
 package assign04;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
+import java.util.Scanner;
 
 /**
  * This program checks the collected run times of the AnagramChecker's areAnagrams
@@ -26,15 +29,6 @@ import java.text.DecimalFormat;
  */
 public class AreAnagramsCheckAnalysis {
 	
-	//TODO: This code is copied directly from lecture 6. Modify accordingly
-	
-	// All of these values are purposely small to keep the lecture demo quick.
-	// Values for your own timing experiments should be larger.
-	private final static int TIMES_TO_LOOP = 10;   // In practice, this value should be larger.    
-	private final static int NSTART = 10000;
-	private final static int NSTOP = 200000;
-	private final static int NINCR = 10000;
-
 	public static void main(String[] args) {
 
 		DecimalFormat formatter = new DecimalFormat("00000E00");
@@ -42,63 +36,27 @@ public class AreAnagramsCheckAnalysis {
 		System.out.println("\nN\t|  T(N)/1\tT(N)/logN\tT(N)/N\t\tT(N)/N^2");
 		System.out.println("-----------------------------------------------------------------------------------");
 
-		for(int N = NSTART; N <= NSTOP; N += NINCR) { 
-
-			System.out.print(N + "\t|  ");
-
-			// Let things stabilize
-			long startTime = System.nanoTime();
-			while(System.nanoTime() - startTime < 1000000000)
-				;
-
-			// Time the routine
-			startTime = System.nanoTime();
-			for(int i = 0; i < TIMES_TO_LOOP; i++) {
-				long ret = doSomething(N);        // What is the Big-O behavior of this mystery method?
+		String fileName = "src/assign04/areAnagramsRunTimes.txt";
+		Scanner fileRead;
+		try {
+			fileRead = new Scanner(new File(fileName));
+			
+			while(fileRead.hasNextLine()) {
+				int N = fileRead.nextInt();
+				int runTime = fileRead.nextInt();
+				
+				System.out.print(N + "\t|  ");			
+				System.out.println(formatter.format(runTime) + "\t" + 
+						formatter.format(runTime / (Math.log10(N) / Math.log10(2))) + "\t" + 
+						formatter.format(runTime / N) + "\t" + 
+						formatter.format(runTime / (N * N)));
 			}
 			
-			long midTime = System.nanoTime();
-
-			// Time the empty loop
-			for(int i = 0; i < TIMES_TO_LOOP; i++) {
-				;
-			}
-
-			long stopTime = System.nanoTime();
-
-			double avgTime = ((midTime - startTime) - (stopTime - midTime)) / (double) TIMES_TO_LOOP;
-
-			System.out.println(formatter.format(avgTime) + "\t" + 
-					formatter.format(avgTime / (Math.log10(N) / Math.log10(2))) + "\t" + 
-					formatter.format(avgTime / N) + "\t" + 
-					formatter.format(avgTime / (N * N)));
+			fileRead.close();
+		} 
+		
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * This is a "mystery" method.
-	 * Without looking at the implementation of this method, you should be able
-	 * to guess its Big-O behavior by looking at the convergence of values 
-	 * printed above. 
-	 * 
-	 * @param N - the problem size
-	 * @return - an unused value
-	 */
-	private static long doSomething(int N) {
-		long count = 0;
-		for(int i = 0; i < N; i++)
-			for(int j = 0; j < 10000; j++)
-				count++;
-		return count;
 	}
 }
