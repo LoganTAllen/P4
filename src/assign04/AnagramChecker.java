@@ -1,5 +1,7 @@
 package assign04;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -20,25 +22,7 @@ public class AnagramChecker {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 
-		String[] sample = new String[] {
-				"alpha",
-				"phlaa",
-				"hapla",
-				"bird",
-				"ribd",
-				"irdb",
-				"palha",
-				"args",
-				"rags",
-				"RasG",
-				"bdir",
-				"Alpha",
-				"RAGS",
-				"GARS",
-				"SArg"
-		};
-		
-		String[] largestGroup = AnagramChecker.getLargestAnagramGroup(sample);
+		String[] largestGroup = AnagramChecker.getLargestAnagramGroup("src/assign04/oneAnagramGroup.txt");
 		
 		System.out.println(largestGroup);
 	}
@@ -65,6 +49,26 @@ public class AnagramChecker {
 		}
 
 		//return the sorted String
+		return ret;
+	}
+	
+	/**
+	 * This method returns the lexicographically-sorted version of
+	 * the input string (using the built-in java sort method)
+	 * 
+	 * @param str - the input string to sort
+	 * @return - the sorted version of the input string
+	 */
+	public static String javaSort(String str) {
+		String[] chars = str.split("");
+		
+		Arrays.sort(chars, (lhs, rhs)->lhs.toLowerCase().compareTo(rhs.toLowerCase()));
+		
+		String ret = "";
+		for(int i = 0; i < chars.length; ++i) {
+			ret += chars[i];
+		}
+		
 		return ret;
 	}
 	
@@ -147,6 +151,17 @@ public class AnagramChecker {
 	}
 	
 	/**
+	 * Returns true if the two input strings are anagrams of eachother
+	 * 
+	 * @param str0 - First String
+	 * @param str1 - Second String
+	 * @return - whether the two input strings are anagrams of eachother
+	 */
+	public static boolean javaAreAnagrams(String str0, String str1) {
+		return javaSort(str0).toLowerCase().equals(javaSort(str1).toLowerCase());
+	}
+	
+	/**
 	 * This method returns the largest group of anagrams in the input
 	 * array of words, in no particular order.
 	 * It returns an empty array if there are no anagrams in the input array.
@@ -178,6 +193,23 @@ public class AnagramChecker {
 		 * if they are not anagrams, the comparator returns -1 indicating that they are not equal.
 		 */
 		return getLargestConsecutiveGroupInArray(arrCopy, (lhs, rhs)->areAnagrams(lhs, rhs) ? 0 : -1);
+	}
+	
+	/**
+	 * This method returns the largest group of anagrams in the input
+	 * array of words, in no particular order.
+	 * It returns an empty array if there are no anagrams in the input array.
+	 * (except using the java sort instead of our insertionSort)
+	 * 
+	 * @param arr - the array to check for anagrams in
+	 * @return - an array of the largest group of anagrams contained in the input array
+	 */
+	public static String[] javaGetLargestAnagramGroup(String[] arr) {
+		String[] arrCopy = arr.clone();
+		
+		Arrays.sort(arrCopy, (lhs, rhs)->javaSort(lhs).toLowerCase().compareTo(javaSort(rhs).toLowerCase()));
+		
+		return getLargestConsecutiveGroupInArray(arrCopy, (lhs, rhs)->javaAreAnagrams(lhs, rhs) ? 0 : -1);
 	}
 	
 	/**
@@ -256,12 +288,21 @@ public class AnagramChecker {
 	 */
 	public static String[] getLargestAnagramGroup(String filename) {
 		
-		//read all of the words from the file into an ArrayList
-		Scanner file = new Scanner(filename); //use a scanner to read from the file.
+
+		//try to open the file, but if it isn't found just open the scanner on an empty string
+		Scanner file; 
+		try {
+			file = new Scanner(new File(filename));
+		} catch (FileNotFoundException e) {
+			file = new Scanner("");
+		} 
+
+		//add all the words in the file to the words ArrayList, then close the file
 		ArrayList<String> words = new ArrayList<String>();
 		while(file.hasNextLine()) {
 			words.add(file.nextLine());
 		}
+		file.close();
 		
 		/*
 		 * the emptyStringArray will either be used to indicate the type of array for ArrayList.toArray() to return
@@ -269,6 +310,34 @@ public class AnagramChecker {
 		 */
 		String[] emptyStringArray = new String[0];
 		return words.size() > 1 ? getLargestAnagramGroup(words.toArray(emptyStringArray)) : emptyStringArray;
+	}
+	
+	/**
+	 * This method returns the largest group of anagrams contained in the input
+	 * file.
+	 * The file is assumed to contain a single word per line.
+	 * returns an empty array if the file does not exist or is empty, or does not contain any groups
+	 * of anagrams larger than a single element.
+	 * 
+	 * @param filename - the parth to the file to search for anagrams
+	 * @return - an array of the largest group of anagrams contained in the file.
+	 */
+	public static String[] javaGetLargestAnagramGroup(String filename) {
+		Scanner file;
+		try {
+			file = new Scanner(new File(filename));
+		} catch (FileNotFoundException e) {
+			file = new Scanner("");
+		}
+		
+		ArrayList<String> words = new ArrayList<String>();
+		while(file.hasNextLine()) {
+			words.add(file.nextLine());
+		}
+		file.close();
+		
+		String[] emptyStringArray = new String[0];
+		return words.size() > 1 ? javaGetLargestAnagramGroup(words.toArray(emptyStringArray)) : emptyStringArray;
 	}
 	
 }
