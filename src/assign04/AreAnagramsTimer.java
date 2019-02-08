@@ -51,8 +51,10 @@ public class AreAnagramsTimer {
 			file.newLine();
 			file.flush();
 			
-			addRandomCharacters(NINCR, rng, input1);
-			addRandomCharacters(NINCR, rng, input2);
+			if(N != NSTOP) {
+				addRandomCharacters(NINCR, rng, input1);
+				addRandomCharacters(NINCR, rng, input2);
+			}
 		}
 
 	}
