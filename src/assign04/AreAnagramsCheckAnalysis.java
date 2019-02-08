@@ -38,6 +38,7 @@ public class AreAnagramsCheckAnalysis {
 
 		String fileName = "src/assign04/areAnagramsRunTimes.txt";
 		Scanner fileRead;
+		
 		try {
 			fileRead = new Scanner(new File(fileName));
 

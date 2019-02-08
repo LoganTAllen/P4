@@ -38,6 +38,7 @@ public class GetLargestAnagramGroupInsertionSortCheckAnalysis {
 
 		String fileName = "src/assign04/getLargestAnagramGroupInsertionSortRunTimes.txt";
 		Scanner fileRead;
+		
 		try {
 			fileRead = new Scanner(new File(fileName));
 			
