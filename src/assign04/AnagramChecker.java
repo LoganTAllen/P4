@@ -9,23 +9,13 @@ import java.util.Scanner;
 
 /**
  * This class contains methods for sorting strings and determining whether they are
- * anagrams of eachother.
- * It also provides methods for find the largest group of anagrams in containers
+ * anagrams of each other.
+ * It also provides methods for finding the largest group of anagrams in containers
  * of words.
  * 
- * @author Parker Nilson and Logan Allen
- *
+ * @author Logan Allen and Parker Nilson
  */
 public class AnagramChecker {
-
-	//TODO: test code
-	@SuppressWarnings("unused")
-	public static void main(String[] args) {
-
-		String[] largestGroup = AnagramChecker.getLargestAnagramGroup("src/assign04/oneAnagramGroup.txt");
-		
-		System.out.println(largestGroup);
-	}
 
 	/**
 	 * This method returns the lexicographically-sorted version of
@@ -35,20 +25,20 @@ public class AnagramChecker {
 	 * @return - the lexicographically sorted version of the input string
 	 */
 	public static String sort(String str) {
-		//generate an object array of the characters in the input string (as individual String objects)
-		//	we want the characters as String objects so that we can compare them in the comparator
+		// Generate an object array of the characters in the input string (as individual String objects)
+		// we want the characters as String objects so that we can compare them in the comparator
 		String[] chars = str.split("");
 		
-		//perform an insertionSort on the array of Characters
+		// Perform an insertionSort on the array of Characters
 		insertionSort(chars, (lhs, rhs)->lhs.toLowerCase().compareTo(rhs.toLowerCase()));
 		
-		//convert Character array back to a string
+		// Convert Character array back to a string
 		String ret = "";
 		for(int i = 0; i < chars.length; ++i) {
 			ret += chars[i];
 		}
 
-		//return the sorted String
+		// Return the sorted String
 		return ret;
 	}
 	
@@ -65,6 +55,7 @@ public class AnagramChecker {
 		Arrays.sort(chars, (lhs, rhs)->lhs.toLowerCase().compareTo(rhs.toLowerCase()));
 		
 		String ret = "";
+		
 		for(int i = 0; i < chars.length; ++i) {
 			ret += chars[i];
 		}
@@ -114,12 +105,9 @@ public class AnagramChecker {
 				swap = false;
 			}
 
-
 			//move the current index up
 			currentIndex++;
-
 		}
-		
 	}
 	
 	/**
@@ -136,26 +124,25 @@ public class AnagramChecker {
 	}
 	
 	/**
-	 * Returns true if the two input strings are anagrams of eachother
+	 * Returns true if the two input strings are anagrams of each other
 	 * 
 	 * @param str0 - First String
 	 * @param str1 - Second String
-	 * @return - whether the two input strings are anagrams of eachother
+	 * @return - whether the two input strings are anagrams of each other
 	 */
 	public static boolean areAnagrams(String str0, String str1) {
-
 		//if the lexicographically sorted versions of both strings are equal, 
-		//	the strings are anagrams of eachother
+		//	the strings are anagrams of each other
 		//use toLowerCase() in order to compare the strings, ignoring capitalization
 		return sort(str0).toLowerCase().equals(sort(str1).toLowerCase());
 	}
 	
 	/**
-	 * Returns true if the two input strings are anagrams of eachother
+	 * Returns true if the two input strings are anagrams of each other
 	 * 
 	 * @param str0 - First String
 	 * @param str1 - Second String
-	 * @return - whether the two input strings are anagrams of eachother
+	 * @return - whether the two input strings are anagrams of each other
 	 */
 	public static boolean javaAreAnagrams(String str0, String str1) {
 		return javaSort(str0).toLowerCase().equals(javaSort(str1).toLowerCase());
@@ -174,10 +161,10 @@ public class AnagramChecker {
 		
 		/*
 		 * perform an insertion sort on the array of strings which compares
-		 * them based on the lexigraphical order of their sorted versions, ignoring capitalization.
+		 * them based on the lexicographical order of their sorted versions, ignoring capitalization.
 		 * 
 		 * this will sort the strings, as they are, in groups of strings which are anagrams
-		 * of eachother.
+		 * of each other.
 		 */
 		insertionSort(arrCopy, (lhs, rhs)->sort(lhs).toLowerCase().compareTo(sort(rhs).toLowerCase()));
 		
@@ -259,7 +246,6 @@ public class AnagramChecker {
 				currentGroupIndex = i;
 				currentGroupSize = 1;
 			}
-			
 		}
 		
 		//if the largest group contains more than one element, fill it.
@@ -288,7 +274,6 @@ public class AnagramChecker {
 	 */
 	public static String[] getLargestAnagramGroup(String filename) {
 		
-
 		//try to open the file, but if it isn't found just open the scanner on an empty string
 		Scanner file; 
 		try {
@@ -302,6 +287,7 @@ public class AnagramChecker {
 		while(file.hasNextLine()) {
 			words.add(file.nextLine());
 		}
+		
 		file.close();
 		
 		/*
@@ -334,6 +320,7 @@ public class AnagramChecker {
 		while(file.hasNextLine()) {
 			words.add(file.nextLine());
 		}
+		
 		file.close();
 		
 		String[] emptyStringArray = new String[0];
@@ -341,32 +328,3 @@ public class AnagramChecker {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
