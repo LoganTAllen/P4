@@ -56,6 +56,8 @@ public class AreAnagramsTimer {
 				addRandomCharacters(NINCR, rng, input2);
 			}
 		}
+		
+		file.close();
 
 	}
 
