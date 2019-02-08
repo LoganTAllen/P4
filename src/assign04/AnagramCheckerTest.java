@@ -47,7 +47,7 @@ class AnagramCheckerTest {
 		@DisplayName("Capital Words")
 		void sortCapitalTest() {
 			String capital = "SaltLakeCity";
-			assertEquals("aaCeiklLStty", AnagramChecker.sort(capital));
+			assertEquals("CLSaaeikltty", AnagramChecker.sort(capital));
 		}
 	
 		@Test

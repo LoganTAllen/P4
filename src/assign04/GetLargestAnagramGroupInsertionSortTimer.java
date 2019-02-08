@@ -64,7 +64,7 @@ public class GetLargestAnagramGroupInsertionSortTimer {
 			long runningTime = getTime(problemSet, N);
 			System.out.println(runningTime);
 			file.write(runningTime + ""); 
-			file.newLine();
+			if(N != NSTOP) file.newLine();
 			file.flush(); //write the contents of this test to the file
 			
 			//fill the problemSet with NINCR more random strings

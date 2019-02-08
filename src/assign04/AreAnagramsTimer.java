@@ -48,7 +48,7 @@ public class AreAnagramsTimer {
 			long runningTime = getTime(input1.toString(), input2.toString());
 			System.out.println(runningTime);
 			file.write(runningTime + "");
-			file.newLine();
+			if(N != NSTOP) file.newLine();
 			file.flush();
 			
 			if(N != NSTOP) {

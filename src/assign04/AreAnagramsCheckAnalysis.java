@@ -42,8 +42,8 @@ public class AreAnagramsCheckAnalysis {
 			fileRead = new Scanner(new File(fileName));
 
 			while(fileRead.hasNextLine()) {
-				int N = fileRead.nextInt();
-				int runTime = fileRead.nextInt();
+				long N = fileRead.nextLong();
+				long runTime = fileRead.nextLong();
 
 				System.out.print(N + "\t|  ");
 				System.out.println(formatter.format(runTime) + "\t" +
