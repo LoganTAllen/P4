@@ -1,5 +1,8 @@
 package assign04;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -13,7 +16,13 @@ import java.util.Random;
  */
 public class AreAnagramsTimer {
 	
-	public static void main(String[] args) {
+	public static void addRandomCharacters(int amt, Random rand, StringBuilder str) {
+		for(int i = 0; i < amt; ++i) {
+			str.append((char) (rand.nextInt(26) + 97));
+		}
+	}
+	
+	public static void main(String[] args) throws IOException {
 
 		final int NSTART = 1000;
 		final int NSTOP = 20000;
@@ -21,24 +30,29 @@ public class AreAnagramsTimer {
 
 		Random rng = new Random();
 		
+		//open a file to write the output of the timings to
+		BufferedWriter file = new BufferedWriter(new FileWriter("src/assign04/areAnagramsRunTimes.txt"));
+		
+		StringBuilder input1 = new StringBuilder();
+		StringBuilder input2 = new StringBuilder();
+		addRandomCharacters(NSTART, rng, input1);
+		addRandomCharacters(NSTART, rng, input2);
+		
 		System.out.println("areAnagrams");
 		System.out.println("N\ttime(ns)");
 
 		for(int N = NSTART; N <= NSTOP; N += NINCR) {
 			System.out.print(N + "\t");
-		
-			// Build two random strings of length N
-			String input1 = new String();
-			String input2 = new String();
+			file.write(N + "\t");
 			
-			for(int i = 1; i <= N; i++) {
-				char a = (char) (rng.nextInt(26) + 97);
-				char b = (char) (rng.nextInt(26) + 97);
-				input1 += a;
-				input2 += b;
-			}
+			long runningTime = getTime(input1.toString(), input2.toString());
+			System.out.println(runningTime);
+			file.write(runningTime + "");
+			file.newLine();
+			file.flush();
 			
-			System.out.println(getTime(input1, input2));
+			addRandomCharacters(NINCR, rng, input1);
+			addRandomCharacters(NINCR, rng, input2);
 		}
 
 	}
@@ -55,17 +69,13 @@ public class AreAnagramsTimer {
 		// Time areAnagrams
 		startTime = System.nanoTime();
 		for(int i = 0; i < TIMES_TO_LOOP; i++) {
-			String copy1 = input1;
-			String copy2 = input2;
-			AnagramChecker.areAnagrams(copy1, copy2);
+			AnagramChecker.areAnagrams(input1, input2);
 		}
 
 		long midTime = System.nanoTime();
 
-		// Remove the cost of running the loop and making copies of strings
+		// Remove the cost of running the loop
 		for(int i = 0; i < TIMES_TO_LOOP; i++) {
-			String copy1 = input1;
-			String copy2 = input2;
 		}
 
 		long endTime = System.nanoTime();
